@@ -30,6 +30,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/projectcalico/felix/fv/containers"
+	"github.com/projectcalico/felix/fv/infrastructure"
 	"github.com/projectcalico/felix/fv/utils"
 	"github.com/projectcalico/libcalico-go/lib/apiconfig"
 	client "github.com/projectcalico/libcalico-go/lib/clientv3"
@@ -99,7 +100,7 @@ func Create() (*Server, error) {
 	var err error
 
 	// Start etcd, which will back the k8s API server.
-	server.etcdContainer = containers.RunEtcd()
+	server.etcdContainer = infrastructure.RunEtcd()
 	if server.etcdContainer == nil {
 		return nil, errors.New("failed to create etcd container")
 	}
