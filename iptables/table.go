@@ -510,10 +510,11 @@ func (t *Table) loadDataplaneState() {
 			}
 		} else {
 			// One of our chains, should match exactly.
-			if !reflect.DeepEqual(dpHashes, expectedHashes) {
-				logCxt.Warn("Detected out-of-sync Calico chain, marking for resync")
-				t.dirtyChains.Add(chainName)
-			}
+			//if !reflect.DeepEqual(dpHashes, expectedHashes) {
+			//logCxt.Warn("Detected out-of-sync Calico chain, marking for resync")
+			logCxt.Warn("Treating all Calico chains as out of sync, always refresh")
+			t.dirtyChains.Add(chainName)
+			//}
 		}
 	}
 
