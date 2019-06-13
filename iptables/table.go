@@ -959,11 +959,34 @@ func (t *Table) applyUpdates() error {
 		return nil // Delay clearing the set until we've programmed iptables.
 	})
 
+	didSomeUpdates := false
+	if inputBuf.Len() > len(tableNameLine) {
+		// We've figured out that we need to make some changes, finish off the input then
+		// execute iptables-restore.  iptables-restore input ends with a COMMIT.
+		inputBuf.WriteString("COMMIT\n")
+		didSomeUpdates = true
+	}
+
 	// Do deletions at the end.  This ensures that we don't try to delete any chains that
 	// are still referenced (because we'll have removed the references in the modify pass
 	// above).  Note: if a chain is being deleted at the same time as a chain that it refers to
 	// then we'll issue a create+flush instruction in the very first pass, which will sever the
 	// references.
+	didSomeDeletes := false
+	t.dirtyChains.Iter(func(item interface{}) error {
+		chainName := item.(string)
+		if _, ok := t.chainNameToChain[chainName]; !ok {
+			if didSomeUpdates && !didSomeDeletes {
+				tableNameLine := fmt.Sprintf("*%s\n", t.Name)
+				inputBuf.WriteString(tableNameLine)
+			}
+			// Chain deletion
+			inputBuf.WriteString(fmt.Sprintf(":%s - -\n", chainName))
+			t.countNumLinesExecuted.Inc()
+			didSomeDeletes = true
+		}
+		return nil // Delay clearing the set until we've programmed iptables.
+	})
 	t.dirtyChains.Iter(func(item interface{}) error {
 		chainName := item.(string)
 		if _, ok := t.chainNameToChain[chainName]; !ok {
@@ -975,11 +998,13 @@ func (t *Table) applyUpdates() error {
 		return nil // Delay clearing the set until we've programmed iptables.
 	})
 
-	if inputBuf.Len() > len(tableNameLine) {
+	if didSomeDeletes {
 		// We've figured out that we need to make some changes, finish off the input then
 		// execute iptables-restore.  iptables-restore input ends with a COMMIT.
 		inputBuf.WriteString("COMMIT\n")
+	}
 
+	if didSomeUpdates || didSomeDeletes {
 		// Annoying to have to copy the buffer here but reading from a buffer is
 		// destructive so if we want to trace out the contents after a failure, we have to
 		// take a copy.
