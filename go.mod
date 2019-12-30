@@ -4,13 +4,14 @@ go 1.13
 
 require (
 	github.com/containernetworking/cni v0.5.2
+	github.com/coreos/etcd v3.3.18+incompatible // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/docopt/docopt-go v0.0.0-20160216232012-784ddc588536
 	github.com/go-ini/ini v1.44.0
 	github.com/gobuffalo/packr/v2 v2.5.2
 	github.com/gogo/protobuf v1.2.2-0.20190723190241-65acae22fc9d
 	github.com/golang/protobuf v1.3.2
-	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
 	github.com/gxed/GoEndian v0.0.0-20160916112711-0f5c6873267e // indirect
 	github.com/gxed/eventfd v0.0.0-20160916113412-80a92cca79a8 // indirect
 	github.com/hashicorp/go-version v1.2.0
@@ -24,8 +25,6 @@ require (
 	github.com/mipearson/rfw v0.0.0-20170619235010-6f0a6f3266ba
 	github.com/onsi/ginkgo v1.10.1
 	github.com/onsi/gomega v1.7.0
-	github.com/opentracing/opentracing-go v0.0.0-20190704175813-135aa78c6f95 // indirect
-	github.com/pkg/errors v0.8.1 // indirect
 	github.com/projectcalico/libcalico-go v1.7.2-0.20191214003639-2449a6f3ad4f
 	github.com/projectcalico/pod2daemon v0.0.0-20190730210055-df57fc59e2e1
 	github.com/projectcalico/typha v0.0.0-20191214040624-782d297f33cb
@@ -37,9 +36,7 @@ require (
 	github.com/vishvananda/netlink v0.0.0-20180501223456-f07d9d5231b9
 	github.com/vishvananda/netns v0.0.0-20160430053723-8ba1072b58e0 // indirect
 	github.com/whyrusleeping/go-logging v0.0.0-20170515211332-0457bb6b88fc // indirect
-	go.uber.org/atomic v1.4.0 // indirect
-	go.uber.org/multierr v1.1.0 // indirect
-	go.uber.org/zap v1.10.0 // indirect
+	go.uber.org/zap v1.13.0 // indirect
 	golang.org/x/net v0.0.0-20191004110552-13f9640d40b9
 	golang.org/x/sys v0.0.0-20190826190057-c7b8b68b1456
 	google.golang.org/grpc v1.19.0
